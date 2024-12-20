@@ -1,58 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Speedtest</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        #speedometer {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 1px solid #ccc;
-            padding: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            color: #333;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados do Speedtest</title>
 </head>
 <body>
-    <h1>Speedtest</h1>
-    <div id="speedometer">
-        <span id="download-speed">0 Mbps</span>
-        <br>
-        <span id="upload-speed">0 Mbps</span>
-    </div>
-    <button id="start-test-button">Iniciar teste</button>
-    <script>
-        // Função para atualizar o velocímetro
-        function updateSpeedometer(data) {
-            const downloadSpeed = parseFloat(data['download']) / 1000000; // Conversão de bytes para Mbps
-            const uploadSpeed = parseFloat(data['upload']) / 1000000; // Conversão de bytes para Mbps
-            document.getElementById('download-speed').innerText = `${downloadSpeed.toFixed(2)} Mbps`;
-            document.getElementById('upload-speed').innerText = `${uploadSpeed.toFixed(2)} Mbps`;
-        }
-    
-        // Realiza o speedtest e atualiza o velocímetro
-        document.getElementById('start-test-button').addEventListener('click', () => {
-            console.log("Botão clicado!");
-            fetch('/speedtest')
-                .then(response => {
-                    console.log("Requisição para /speedtest realizada com sucesso");
-                    return response.json();
-                })
-                .then(data => {
-                    updateSpeedometer(data);
-                })
-                .catch(error => {
-                    console.error("Erro ao realizar requisição para /speedtest");
-                    console.error(error);
-                });
-        });
-    </script>
+    <h1>Informações do Speedtest</h1>
+
+    <h2>Velocidade de Download: {{ download }} Mbps</h2>
+    <h2>Velocidade de Upload: {{ upload }} Mbps</h2>
+    <h2>Ping: {{ ping }} ms</h2>
+
+    <h3>Servidor</h3>
+    <p>Nome: {{ server['name'] }}</p>
+    <p>País: {{ server['country'] }}</p>
+    <p>URL: <a href="{{ server['url'] }}" target="_blank">{{ server['url'] }}</a></p>
+
+    <h3>Cliente</h3>
+    <p>IP: {{ client['ip'] }}</p>
+    <p>Provedor: {{ client['isp'] }}</p>
+    <p>País: {{ client['country'] }}</p>
 </body>
 </html>
