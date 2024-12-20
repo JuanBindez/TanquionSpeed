@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speedtest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #speedometer {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speedtest</h1>
+    <div id="speedometer">
+        <span id="download-speed">0 Mbps</span>
+        <br>
+        <span id="upload-speed">0 Mbps</span>
+    </div>
+    <button id="start-test-button">Iniciar teste</button>
+    <script>
+        // Função para atualizar o velocímetro
+        function updateSpeedometer(data) {
+            const downloadSpeed = parseFloat(data['download']) / 1000000; // Conversão de bytes para Mbps
+            const uploadSpeed = parseFloat(data['upload']) / 1000000; // Conversão de bytes para Mbps
+            document.getElementById('download-speed').innerText = `${downloadSpeed.toFixed(2)} Mbps`;
+            document.getElementById('upload-speed').innerText = `${uploadSpeed.toFixed(2)} Mbps`;
+        }
+    
+        // Realiza o speedtest e atualiza o velocímetro
+        document.getElementById('start-test-button').addEventListener('click', () => {
+            console.log("Botão clicado!");
+            fetch('/speedtest')
+                .then(response => {
+                    console.log("Requisição para /speedtest realizada com sucesso");
+                    return response.json();
+                })
+                .then(data => {
+                    updateSpeedometer(data);
+                })
+                .catch(error => {
+                    console.error("Erro ao realizar requisição para /speedtest");
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+</html>
